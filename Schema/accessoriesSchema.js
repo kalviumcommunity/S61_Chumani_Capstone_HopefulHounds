@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const imageLinksSchema = new mongoose.Schema({
     image_links: {
@@ -6,9 +7,8 @@ const imageLinksSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: function(v) {
-                // Basic URL validation using regex
-                const urlRegex = /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/gm;
-                return v.every(link => urlRegex.test(link));
+                // Validate each URL using validator.isURL
+                return v.every(url => validator.isURL(url));
             },
             message: props => `${props.value} is not a valid URL!`
         }
@@ -18,3 +18,4 @@ const imageLinksSchema = new mongoose.Schema({
 const ImageLinksModel = mongoose.model("ImageLinks", imageLinksSchema);
 
 module.exports = { ImageLinksModel };
+
