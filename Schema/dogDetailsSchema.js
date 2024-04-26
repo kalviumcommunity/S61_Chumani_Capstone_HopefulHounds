@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const dogSchema = new mongoose.Schema({
     name: {
@@ -35,15 +36,19 @@ const dogSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: function(v) {
-                // Basic URL validation using regex
-                return /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/gm.test(v);
+                return validator.isURL(v, { protocols: ["http", "https"], require_protocol: true });
             },
             message: props => `${props.value} is not a valid URL!`
         }
+    },
+    adoption_status: {
+        type: String,
+        enum: ["Available", "Adopted", "Pending"],
+        default: "Available",
+        required: true,
     }
 });
 
 const DogModel = mongoose.model("Dog", dogSchema);
 
 module.exports = { DogModel };
-
