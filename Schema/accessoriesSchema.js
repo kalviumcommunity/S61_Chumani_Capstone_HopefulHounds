@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-const imageLinksSchema = new mongoose.Schema({
+const accessoriesSchema = new mongoose.Schema({
     image_links: {
         type: [String],
         required: true,
@@ -15,7 +15,7 @@ const imageLinksSchema = new mongoose.Schema({
     }
 });
 
-const ImageLinksModel = mongoose.model("ImageLinks", imageLinksSchema);
+const AccessoriesModel = mongoose.model("ImageLinks", accessoriesSchema);
 
-module.exports = { ImageLinksModel };
+module.exports = { AccessoriesModel };
 
