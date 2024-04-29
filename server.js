@@ -12,9 +12,9 @@ app.get('/', (req, res) => {
 app.get('/ping', (req, res) => {
     res.send("Endpoint")
 })
-app.use('/dog', dogRoute);
-app.use('/accessory', accessoriesRoute);
-app.use('/hospital', hospitalsRoute);
+app.use('/api', dogRoute);
+app.use('/api/accessory', accessoriesRoute);
+app.use('/api/hospital', hospitalsRoute);
 app.listen(3000, () => {
     console.log("Server running on port 3000");
 })
