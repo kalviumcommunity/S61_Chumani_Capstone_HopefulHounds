@@ -15,6 +15,7 @@ accessoriesRoute.get('/read', async(req, res) => {
 accessoriesRoute.post('/create', async (req, res) => {
     try{
         const newAccessoryData = await AccessoriesModel.create(req.body);
+        console.log("Accessory data created:", newAccessoryData);
         res.status(201).json({message: "Dog data created successfully", newAccessoryData});
     }catch(error){
         if(error.name === 'ValidationError'){
