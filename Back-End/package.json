@@ -4,7 +4,9 @@
   "description": "_Welcome to Our Dog Adoption and Care Website! At Hopeful Hounds, we are passionate about connecting loving homes with furry companions in need. Our platform serves as a bridge between adoptable dogs and caring individuals or families, aiming to create lifelong bonds filled with joy and companionship._",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "node server.js",
+    "server":"nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +16,7 @@
     "express": "^4.19.2",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.2",
+    "nodemon": "^3.1.0",
     "validator": "^13.11.0"
   }
 }

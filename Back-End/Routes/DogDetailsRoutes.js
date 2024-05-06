@@ -3,6 +3,7 @@ const {DogModel} = require('../Schema/dogDetailsSchema')
 const {Router} = require('express');
 const dogRoute = express.Router();
 dogRoute.use(express.json());
+
 dogRoute.get('/read', async(req, res) => {
     try{
         const data = await DogModel.find();
