@@ -34,8 +34,7 @@ dogRoute.put('/update/:id', async(req, res) => {
         if(!dogDetail){
             return res.status(404).json({message: "Dog detail not found"});
         }
-        const updatedDogData = await DogModel.findByIdAndUpdate(id);
-        res.status(200).json(updatedDogData);
+        res.status(200).json(dogDetail);
     }catch(error){
         res.status(500).json({message: error.message});
     }
