@@ -19,3 +19,4 @@ const AccessoriesModel = mongoose.model("accessories", accessoriesSchema);
 
 module.exports = { AccessoriesModel };
 
+
