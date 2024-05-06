@@ -26,4 +26,18 @@ hospitalsRoute.post('/create', async (req, res) => {
         }
     }
 })
+
+hospitalsRoute.put('/update/:id', async(req, res) => {
+    try{
+        const {id} = req.params;
+        const hospital = await HospitalsModel.findByIdAndUpdate(id, req.body);
+        if(!hospital){
+            return res.status(404).json({message: "Hospital not found"});
+        }
+        const updatedHospital = await HospitalsModel.findByIdAndUpdate(id);
+        res.status(200).json(updatedHospital);
+    }catch(error){
+        res.status(500).json({message: error.message});
+    }
+})
 module.exports = hospitalsRoute;
