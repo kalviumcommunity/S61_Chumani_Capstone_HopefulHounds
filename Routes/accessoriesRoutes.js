@@ -3,6 +3,15 @@ const {AccessoriesModel} = require('../Schema/accessoriesSchema')
 const {Router} = require('express');
 const accessoriesRoute = express.Router();
 accessoriesRoute.use(express.json());
+
+const validateAccessoryData = (req, res, next) => {
+    const {image_links} = req.body;
+    if(!image_links || !Array.isArray(image_links) || image_links.length === 0){
+        return res.status(400).json({error: "Invalid accessory data. 'image_links' field is required and should be a non-empty array."})
+    }
+    next();
+}
+
 accessoriesRoute.get('/read', async(req, res) => {
     try{
         const data = await AccessoriesModel.find();
@@ -30,8 +39,8 @@ accessoriesRoute.post('/create', async (req, res) => {
 accessoriesRoute.put("/update/:id", async (req, res) => {
     try{
         const {id} = req.params;
-        const updatedAccessory = await AccessoriesModel.findByIdAndUpdate(id, req.body, {new : true});
-        if(!updatedAccessory){
+        const accessory = await AccessoriesModel.findByIdAndUpdate(id, req.body);
+        if(!accessory){
             return res.status(404).json({message: "Accessory not found"});
         }
         res.status(200).json(updatedAccessory);
