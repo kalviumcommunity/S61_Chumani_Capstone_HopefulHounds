@@ -26,4 +26,19 @@ accessoriesRoute.post('/create', async (req, res) => {
         }
     }
 })
+
+accessoriesRoute.put("/update/:id", async (req, res) => {
+    try{
+        const {id} = req.params;
+        const aceessory = await AccessoriesModel.findByIdAndUpdate(id, req.body);
+        if(!aceessory){
+            return res.status(404).json({message: "Accessory not found"});
+        }
+        const updatedAccessory = await AccessoriesModel.findByIdAndUpdate(id);
+        res.status(200).json(updatedAccessory);
+    }catch(error){
+        res.status(500).json({message : error.message});
+    }
+})
+
 module.exports = accessoriesRoute;
