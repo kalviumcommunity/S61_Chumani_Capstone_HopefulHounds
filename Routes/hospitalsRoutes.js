@@ -16,7 +16,7 @@ hospitalsRoute.post('/create', async (req, res) => {
     try{
         const newHospitalData = await HospitalsModel.create(req.body);
         console.log("Hospital data created:", newHospitalData);
-        res.status(201).json({message: "Dog data created successfully", newHospitalData});
+        res.status(201).json({message: "hospital data created successfully", newHospitalData});
     }catch(error){
         if(error.name === 'ValidationError'){
             res.status(400).json({error: "Invalid data provided", details: error.errors});
