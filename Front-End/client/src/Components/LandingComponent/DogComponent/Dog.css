@@ -1,0 +1,9 @@
+.data-container{
+    background-image: url('../../../assets/Capstone-1/image-10.jpeg');
+    background-repeat: no-repeat;
+    background-size:cover;
+    display: grid;
+    grid-template-columns: repeat(3,500px);
+    grid-template-rows: repeat(2,450px);
+    color: white;
+}
