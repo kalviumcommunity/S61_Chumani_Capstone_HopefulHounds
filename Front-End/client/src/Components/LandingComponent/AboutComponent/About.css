@@ -1,0 +1,9 @@
+.about{
+    height: 99.7vh;
+    margin-top: -22px;
+    margin-left: -8px;
+    background-image: url('../../../assets/Capstone-1/image-21.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    line-height: 40px;
+}

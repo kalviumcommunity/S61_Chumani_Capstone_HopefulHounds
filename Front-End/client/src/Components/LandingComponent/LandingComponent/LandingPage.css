@@ -1,0 +1,45 @@
+.main{
+    display: flex;
+    justify-content: space-between;
+}
+#logo{
+    height: 50px;
+    width: 50px;
+}
+.logo-container{
+    display: flex;
+    justify-content:first baseline;
+    align-items: center;
+}
+.nav-options{
+    display: flex;
+    gap: 30px;
+    cursor: pointer;
+}
+.body{
+    border: 1px solid black;
+    height: 600px;
+    width:100%;
+    background-image: url('../../../assets/Capstone-1/image-2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+}
+.motto{
+    border: 1px solid black;
+    height: 100px;
+    width: 300px;
+    margin-left: 70%;
+    margin-top: 10%;
+
+}
+.start-btn{
+    position: relative;
+    top: 80px;
+    right: 400px;
+    border: 1px solid black;
+    width: fit-content;
+    height: 50px;
+    text-align: center;
+    cursor: pointer;
+}
