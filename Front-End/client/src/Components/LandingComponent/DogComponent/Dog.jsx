@@ -21,7 +21,7 @@ function Dog() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     axios
-      .get("http://localhost:4000/api/read")
+      .get(`${process.env.REACT_APP_API_URL}/read`)
       .then((response) => {
         console.log(response.data);
         setDogData(response.data.data);
