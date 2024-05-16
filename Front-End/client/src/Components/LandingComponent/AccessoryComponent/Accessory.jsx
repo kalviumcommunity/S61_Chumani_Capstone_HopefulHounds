@@ -12,7 +12,7 @@ function Accessory() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/api/accessory/read');
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/accessory/read`);
                 console.log(response.data);
                 setEntities(response.data.data);
             } catch (error) {
@@ -25,7 +25,12 @@ function Accessory() {
     }, []);
 
     const handleBookNow = () => {
-        onOpen(); // Open the drawer when "Book Now" button is clicked
+        try{
+            onOpen(); // Open the drawer when "Book Now" button is clicked
+        }catch(error){
+            console.error('Error opening the drawer:', error);
+            setError('Failed to opne the drawer.  Please try again.')
+        }
     };
 
     return (

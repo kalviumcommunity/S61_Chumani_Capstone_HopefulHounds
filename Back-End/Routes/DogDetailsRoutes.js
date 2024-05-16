@@ -4,17 +4,18 @@ const {Router} = require('express');
 const dogRoute = express.Router();
 dogRoute.use(express.json());
 
-dogRoute.get('/read', async(req, res) => {
+dogRoute.get('/read', async(req, res, next) => {
     try{
         const data = await DogModel.find();
         res.status(200).send({msg: "Data received", data});
     }catch(error){
         console.error("Error fetching dog data", error);
         res.status(500).json({errMsg: "Invalid get request", error})
+        next(error);
     }
 })
 
-dogRoute.post('/create', async (req, res) => {
+dogRoute.post('/create', async (req, res, next) => {
     try{
         const newDogData = await DogModel.create(req.body);
         res.status(201).json({message: "Dog data created successfully", newDogData});
@@ -24,6 +25,7 @@ dogRoute.post('/create', async (req, res) => {
         }else{
             console.error("Error creating dog data", error);
             res.status(500).json({error: "Internal server error"});
+            next(error);
         }
     }
 })
@@ -38,6 +40,7 @@ dogRoute.put('/update/:id', async(req, res) => {
         res.status(200).json(dogDetail);
     }catch(error){
         res.status(500).json({message: error.message});
+        next(error);
     }
 });
 

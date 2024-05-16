@@ -6,17 +6,26 @@ function Hospital() {
   const [entities, setEntities] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [filteredHospitals, setFilteredHospitals] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:4000/api/hospital/read')
-      .then(response => {
+    const fetchData = async () => {
+      setLoading(true);
+      try{
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/hospital/read`);
         console.log(response.data);
         setEntities(response.data.data);
-      })
-      .catch(error => {
-        console.log("Error fetching entities:", error);
-      });
-  }, []);
+        setLoading(false);
+      }catch(error){
+        console.log('Error fetching entities:', error);
+        setError('Failed to fetch data.  Please try again later.');
+        setLoading(false);
+      }
+    };
+    fetchData();
+  },[]);
+
 
   const handlePlaceClick = (place) => {
     setSelectedPlace(place);
@@ -31,7 +40,12 @@ function Hospital() {
   return (
     <div className='place'>
       <h1>Choose your location</h1>
-      <div className='placeContainer'>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <div className='placeContainer'>
         {entities.map((entity) => (
           <div key={entity._id} className='placeItem' onClick={() => handlePlaceClick(entity.city)}>
             <p><strong>City:</strong> {entity.city}</p>
@@ -39,6 +53,7 @@ function Hospital() {
           </div>
         ))}
       </div>
+      )}
       {selectedPlace && entities.length > 0 && (
         <div>
           <h2>Hospitals in {selectedPlace}</h2>
