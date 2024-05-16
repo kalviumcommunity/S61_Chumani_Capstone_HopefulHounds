@@ -1,0 +1,26 @@
+.window{
+    height: 96vh;
+    background-image: url('../../../assets/Capstone-1/image-1.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+}
+.box-container{
+    display: flex;
+    justify-content: space-around;
+}
+.box-1, .box-2{
+    border: 1px solid black;
+    width: 150px;
+    height: 200px;
+}
+.box-1{
+   justify-content: space-around;
+}
+
+.option{
+    border: 1px solid black;
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
+}
