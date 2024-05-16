@@ -17,6 +17,13 @@ app.get('/ping', (req, res) => {
 app.use('/api', dogRoute);
 app.use('/api/accessory', accessoriesRoute);
 app.use('/api/hospital', hospitalsRoute);
+app.use((err, req,res,next) => {
+    console.error(err.stack);
+    res.status(err.status || 500).json({
+        message: err.message || 'Internal Server Error',
+        error: process.env.NODE_ENV === 'production' ? {} : err
+    })
+})
 app.listen(4000, () => {
     console.log("Server running on port 4000");
 })
