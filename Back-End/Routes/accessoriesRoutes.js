@@ -12,16 +12,17 @@ const validateAccessoryData = (req, res, next) => {
     next();
 }
 
-accessoriesRoute.get('/read', async(req, res) => {
+accessoriesRoute.get('/read', async(req, res, next) => {
     try{
         const data = await AccessoriesModel.find();
         res.status(200).send({msg: "Data received", data});
     }catch(error){
         console.error("Error fetching dog data", error);
         res.status(500).json({errMsg: "Invalid get request", error})
+        next(error);
     }
 })
-accessoriesRoute.post('/create', async (req, res) => {
+accessoriesRoute.post('/create', async (req, res, next) => {
     try{
         const newAccessoryData = await AccessoriesModel.create(req.body);
         console.log("Accessory data created:", newAccessoryData);
@@ -32,11 +33,12 @@ accessoriesRoute.post('/create', async (req, res) => {
         }else{
             console.error("Error creating dog data", error);
             res.status(500).json({error: "Internal server error"});
+            next(error);
         }
     }
 })
 
-accessoriesRoute.put("/update/:id", async (req, res) => {
+accessoriesRoute.put("/update/:id", async (req, res, next) => {
     try{
         const {id} = req.params;
         const accessory = await AccessoriesModel.findByIdAndUpdate(id, req.body);
@@ -46,6 +48,7 @@ accessoriesRoute.put("/update/:id", async (req, res) => {
         res.status(200).json(updatedAccessory);
     }catch(error){
         res.status(500).json({message : error.message});
+        next(error);
     }
 })
 

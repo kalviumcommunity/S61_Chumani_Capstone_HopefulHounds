@@ -3,13 +3,14 @@ const {HospitalsModel} = require('../Schema/hospitalsSchema')
 const {Router} = require('express');
 const hospitalsRoute = express.Router();
 hospitalsRoute.use(express.json());
-hospitalsRoute.get('/read', async(req, res) => {
+hospitalsRoute.get('/read', async(req, res, next) => {
     try{
         const data = await HospitalsModel.find();
         res.status(200).send({msg: "Data received", data});
     }catch(error){
         console.error("Error fetching dog data", error);
         res.status(500).json({errMsg: "Invalid get request", error})
+        next(error);
     }
 })
 hospitalsRoute.post('/create', async (req, res) => {
@@ -23,6 +24,7 @@ hospitalsRoute.post('/create', async (req, res) => {
         }else{
             console.error("Error creating dog data", error);
             res.status(500).json({error: "Internal server error"});
+            next(error);
         }
     }
 })
@@ -38,6 +40,7 @@ hospitalsRoute.put('/update/:id', async(req, res) => {
         res.status(200).json(updatedHospital);
     }catch(error){
         res.status(500).json({message: error.message});
+        next(error);
     }
 })
 module.exports = hospitalsRoute;
