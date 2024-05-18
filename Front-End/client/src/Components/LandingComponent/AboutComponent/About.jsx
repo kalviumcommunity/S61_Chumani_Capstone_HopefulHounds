@@ -1,19 +1,23 @@
 import React from "react";
 import './About.css'
+import NavbarFooter from "../NavbarFooterComponent/NavbarFooter";
+import Footer from "../NavbarFooterComponent/Footer";
 
 export default function About() {
   return (
+    <div>
+      <NavbarFooter />
     <div className="about">
       <h1>ABOUT US</h1>
       <h2>Welcome to our Dog Adoption and Care Website!</h2>
-      <h3>
+      <p>
         At Hopeful Hounds, we are passionate about connecting loving homes with
         furry companions in need. Our platform serves as a bridge between
         adoptable dogs and caring individuals or families, aiming to create
         lifelong bonds filled with joy and companionship.
-      </h3>
+      </p>
       <h2>Our Mission</h2>
-      <h3>
+      <p>
         <ul>
           <li>
             Facilitate the adoption process by providing a user-friendly
@@ -29,9 +33,9 @@ export default function About() {
             adoption, fostering, and volunteer opportunities.
           </li>
         </ul>
-      </h3>
+      </p>
       <h2>Our Commitment to Excellence:</h2>
-      <h3>
+      <p>
         <ul>
           <li>
             <b>
@@ -53,7 +57,9 @@ export default function About() {
             </li>
           </li>
         </ul>
-      </h3>
+      </p>
+    </div>
+    <Footer />
     </div>
   );
 }

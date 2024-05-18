@@ -1,0 +1,24 @@
+.footer {
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #7e0081;
+    width: 100%;
+  }
+  .follow {
+    font-weight: bold;
+  }
+  
+  .social-media-logo-container {
+    display: flex;
+  }
+  
+  .social-media-logo {
+    margin-right: 10px;
+  }
+  
+  .social-media-logo img {
+    width: 40px;
+  }
+  
