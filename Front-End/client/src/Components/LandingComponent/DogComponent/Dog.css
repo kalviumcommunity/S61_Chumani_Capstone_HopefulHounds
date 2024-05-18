@@ -1,9 +1,19 @@
 .data-container{
-    background-image: url('../../../assets/Capstone-1/image-10.jpeg');
+    /* background-image: url('../../../assets/Capstone-1/image-10.jpeg'); */
     background-repeat: no-repeat;
     background-size:cover;
     display: grid;
     grid-template-columns: repeat(3,500px);
     grid-template-rows: repeat(2,450px);
     color: white;
+}
+.dog{
+    position: relative;
+    top: 76px;
+    color: white;
+    margin-left: -10px;
+    text-align: center;
+    background-image: url('../../../assets/Capstone-1/image-10.jpeg');
+    background-repeat: no-repeat;
+    background-size:cover;
 }
