@@ -1,4 +1,8 @@
 .donate{
-    height: 97vh;
     background-image: url('../../../assets/Capstone-1/image-17.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 80vh;
+    position: relative;
+    top: 60px;
 }

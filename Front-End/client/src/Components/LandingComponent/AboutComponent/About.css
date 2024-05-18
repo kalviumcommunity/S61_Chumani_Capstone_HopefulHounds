@@ -1,9 +1,33 @@
-.about{
-    height: 99.7vh;
-    margin-top: -22px;
-    margin-left: -8px;
+.about {
+    margin-top: 60px;
+    margin-bottom: 100px; 
+    height: 90vh;
+    padding: 20px; 
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    /* background-image: url('../../../assets/Capstone-1/image-21.jpg'); */
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+.about::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-image: url('../../../assets/Capstone-1/image-21.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-    line-height: 40px;
+    background-position: center;
+    filter: brightness(50%);
+    z-index: -1; 
+    height: 110vh;
+}
+
+.about > * {
+    position: relative;
+    z-index: 1;
 }
