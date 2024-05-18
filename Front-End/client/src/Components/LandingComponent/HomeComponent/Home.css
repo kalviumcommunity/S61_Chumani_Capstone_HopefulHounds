@@ -1,26 +1,67 @@
+.title{
+    text-align: center;
+}
 .window{
-    height: 96vh;
+    height: calc(95vh );
     background-image: url('../../../assets/Capstone-1/image-1.png');
     background-repeat: no-repeat;
     background-size: cover;
     color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 10px;
 }
 .box-container{
     display: flex;
     justify-content: space-around;
+    height: 500px;
+    width: 100%;
+   
 }
-.box-1, .box-2{
-    border: 1px solid black;
-    width: 150px;
-    height: 200px;
+.box-2{
+    /* border: 1px solid black; */
+    width: 350px;
+    height: 400px;
+    background-color: rgba(242, 234, 234, 0.7);
+    color: black;
+    text-align: center;
+    line-height: 55px;
+    font-weight: bold;
 }
 .box-1{
-   justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 350px;
+    height: 400px;
+    background-color: rgba(242, 234, 234, 0.7)
 }
 
 .option{
     border: 1px solid black;
-    height: 30px;
+    height: 50px;
+    width: 250px;
+    padding: 20px;
     text-align: center;
     cursor: pointer;
+    background-color: rgba(6, 6, 6, 0.6);
+    margin-left: 25px;
+}
+.box-1 a{
+    color: white;
+    text-decoration: none;
+}
+.adopt-btn{
+    background-color: rgba(6, 6, 6, 0.6);
+    border-radius: 30px;
+    width: 100px;
+    text-align: center;
+    margin-top: auto;
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    margin-left: 35%;
 }

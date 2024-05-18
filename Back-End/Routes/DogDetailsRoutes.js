@@ -44,4 +44,18 @@ dogRoute.put('/update/:id', async(req, res) => {
     }
 });
 
+dogRoute.delete('/delete/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedDog = await DogModel.findByIdAndDelete(id);
+        if (!deletedDog) {
+            return res.status(404).json({ message: "Dog detail not found" });
+        }
+        res.status(200).json({ message: "Dog detail deleted successfully", deletedDog });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+        next(error);
+    }
+});
+
 module.exports = dogRoute;

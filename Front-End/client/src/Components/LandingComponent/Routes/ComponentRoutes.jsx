@@ -1,5 +1,5 @@
 import React from 'react';
-import {Routes, Route, Link} from 'react-router-dom'
+import {Routes, Route} from 'react-router-dom'
 import LandingPage from '../LandingComponent/LandingPage';
 import About from '../AboutComponent/About';
 import Accessory from '../AccessoryComponent/Accessory';
