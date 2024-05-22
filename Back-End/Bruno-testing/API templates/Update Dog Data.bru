@@ -1,0 +1,25 @@
+meta {
+  name: Update Dog Data
+  type: http
+  seq: 7
+}
+
+put {
+  url: http://localhost:4000/api/update/664da84d8b16e5c37426181c
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "max",
+    "breed": "Golden Retriever",
+    "age": 2,
+    "gender": "Male",
+    "vaccinated": true,
+    "description": "Friendly and playful",
+    "address": "123 Main Street, City",
+    "picture_link": "https://example.com/max.jpg",
+    "adoption_status": "Available"
+  }
+}
