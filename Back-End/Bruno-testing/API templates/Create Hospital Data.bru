@@ -1,0 +1,30 @@
+meta {
+  name: Create Hospital Data
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:4000/api/hospital/create
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "city": "CityName",
+    "state": "StateName",
+    "hospitals": [
+      {
+        "name": "HospitalName",
+        "address": {
+          "street": "StreetName",
+          "colony": "ColonyName",
+          "pin_code": "PinCode",
+          "phone": "PhoneNumber"
+        }
+      }
+    ]
+  }
+  
+}

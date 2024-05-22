@@ -1,0 +1,19 @@
+meta {
+  name: Update Accessory Data
+  type: http
+  seq: 8
+}
+
+put {
+  url: http://localhost:4000/api/update/664da7fa8b16e5c374261817
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "image_links": [
+      "https://example.com/image.jpg"
+    ]
+  }
+}

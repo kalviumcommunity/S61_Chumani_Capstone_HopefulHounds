@@ -1,0 +1,29 @@
+meta {
+  name: Update Hospital Data
+  type: http
+  seq: 9
+}
+
+put {
+  url: http://localhost:4000/api/hospital/update/664da82c8b16e5c374261819
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "city": "cityName",
+    "state": "StateName",
+    "hospitals": [
+      {
+        "name": "HospitalName",
+        "address": {
+          "street": "StreetName",
+          "colony": "ColonyName",
+          "pin_code": "PinCode",
+          "phone": "PhoneNumber"
+        }
+      }
+    ]
+  }
+}
