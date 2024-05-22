@@ -1,0 +1,19 @@
+meta {
+  name: Create Accessory Data
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:4000/api/accessory/create
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "image_links": [
+      "https://example.com/image1.jpg"
+    ]
+  }
+}
