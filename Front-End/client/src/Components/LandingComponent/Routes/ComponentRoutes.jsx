@@ -7,6 +7,7 @@ import Home from '../HomeComponent/Home';
 import Hospital from '../HospitalComponent/Hospital';
 import Donate from '../DonateComponent/Donate';
 import Dog from '../DogComponent/Dog';
+import Login from '../LoginComponent/Login';
 
 function ComponentRoutes() {
   return (
@@ -19,6 +20,7 @@ function ComponentRoutes() {
         <Route path='/hospital' element={<Hospital />}></Route>
         <Route path='/donate' element={<Donate />}></Route>
         <Route path='/adopt' element={<Dog />}></Route>
+        <Route path='/login' element={<Login />}></Route>
       </Routes>
     </div>
   );
