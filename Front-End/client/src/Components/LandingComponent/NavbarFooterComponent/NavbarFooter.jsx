@@ -33,6 +33,9 @@ function NavbarFooter({children}) {
           <Link to="/login">
             <h2 style={{border:"4px solid black", padding:"7px", borderRadius:"20px", backgroundColor:"#7e0081", color:"white", position:"relative", bottom:"10px"}}>Login</h2>
           </Link>
+          <Link to="/register">
+            <h2 style={{border:"4px solid black", padding:"7px", borderRadius:"20px", backgroundColor:"#7e0081", color:"white", position:"relative", bottom:"10px"}}>Register</h2>
+          </Link>
         </div>
       </div>
       <div className="children">{children}</div>
