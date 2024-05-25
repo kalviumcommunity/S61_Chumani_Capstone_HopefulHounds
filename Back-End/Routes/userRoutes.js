@@ -7,7 +7,9 @@ const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 
-const secretKey = 'mySimpleSecretKey123'
+require('dotenv').config();
+
+const secretKey = process.env.JWT_SECRET;
 
 const uploadsDir = path.join(__dirname,'../uploads');
 if(!fs.existsSync(uploadsDir)){
@@ -73,11 +75,15 @@ const authenticateToken = (req, res, next) => {
     const token = req.header('Authorization');
     if(!token) return res.status(401).send({message:'Access Denied'});
     try{
-        const verified = jwt.verify(token, secreatKey);
+        const verified = jwt.verify(token, secretKey);
         req.user = verified;
         next();
     }catch(error){
-        res.status(400).send({message: 'Invalid Token'});
+        if(error instanceof TokenExpiredError){
+            return res.status(401).send({message: 'Token has expired'});
+        }else{
+            return res.status(400).send({message: 'Invalid Token'});
+        }
     }
 };
 
