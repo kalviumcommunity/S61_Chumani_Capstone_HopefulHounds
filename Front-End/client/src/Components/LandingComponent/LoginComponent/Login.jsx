@@ -23,6 +23,7 @@ function Login() {
         
                 if (response.ok) {
                     const data = await response.json();
+                    localStorage.setItem('token', data.token);
                     toast({
                         title: data.message || 'Logged in successfully!',
                         status: 'success',
@@ -51,11 +52,7 @@ function Login() {
             });
         }
     };
-    
-    
-    
-    
-    
+      
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
