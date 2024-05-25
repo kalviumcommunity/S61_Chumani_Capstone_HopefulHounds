@@ -5,6 +5,7 @@ const app = express();
 const dogRoute = require('./Routes/DogDetailsRoutes');
 const accessoriesRoute = require('./Routes/accessoriesRoutes');
 const hospitalsRoute = require('./Routes/hospitalsRoutes');
+const userRoute = require('./Routes/userRoutes');
 app.use(express.json());
 app.use(cors());
 connectDB();
@@ -17,6 +18,7 @@ app.get('/ping', (req, res) => {
 app.use('/api', dogRoute);
 app.use('/api/accessory', accessoriesRoute);
 app.use('/api/hospital', hospitalsRoute);
+app.use('/api/user',  userRoute);
 app.use((err, req,res,next) => {
     console.error(err.stack);
     res.status(err.status || 500).json({
