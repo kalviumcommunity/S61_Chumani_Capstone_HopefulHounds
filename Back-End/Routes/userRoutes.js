@@ -6,6 +6,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const{registerSchema, loginSchema} = require('./validator');
 
 require('dotenv').config();
 
@@ -29,9 +30,17 @@ const upload = multer({storage: storage});
 
 router.post('/register', upload.single('profilePicture'), async (req, res) => {
     try {
+        const { error } = registerSchema.validate(req.body);
+        if (error) {
+            return res.status(400).send({ message: error.details[0].message });
+        }
         const { username, email, password } = req.body;
         if (!username || !email || !password) {
             return res.status(400).send({ message: 'All fields are required' });
+        }
+        const existingUser = await userModel.findOne({ email });
+        if (existingUser) {
+            return res.status(409).send({ message: 'User already exists' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -52,6 +61,10 @@ router.post('/register', upload.single('profilePicture'), async (req, res) => {
 });
 router.post('/login', async(req, res) => {
     try{
+        const { error } = loginSchema.validate(req.body);
+        if (error) {
+            return res.status(400).send({ message: error.details[0].message });
+        }
         const {email ,password} = req.body;
         const user = await userModel.findOne({email});
         if(user){
