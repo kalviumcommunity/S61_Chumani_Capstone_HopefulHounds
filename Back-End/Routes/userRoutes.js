@@ -27,19 +27,30 @@ const storage = multer.diskStorage({
 });
 const upload = multer({storage: storage});
 
+const handleValidationError = (error, res) => {
+    if(error && error.details && error.details[0] && error.details[0].message){
+        return res.status(400).send({message: error.details[0].message});
+    }
+    return res.status(400).send({message: 'Validation error'});
+}
+
 
 router.post('/register', upload.single('profilePicture'), async (req, res) => {
     try {
-        const { error } = registerSchema.validate(req.body);
-        if (error) {
-            return res.status(400).send({ message: error.details[0].message });
-        }
         const { username, email, password } = req.body;
+        const profilePicture = req.file;
+        const { error } = registerSchema.validateAsync({...req.body, profilePicture});
+        if (error) {
+            console.log(`Registration validation failed for user ${email}: ${error.details[0].message}`)
+            return handleValidationError(error, res);
+        }
+        
         if (!username || !email || !password) {
             return res.status(400).send({ message: 'All fields are required' });
         }
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
+            console.log(`Registration attempt failed for existing user ${email}`);
             return res.status(409).send({ message: 'User already exists' });
         }
 
@@ -61,9 +72,10 @@ router.post('/register', upload.single('profilePicture'), async (req, res) => {
 });
 router.post('/login', async(req, res) => {
     try{
-        const { error } = loginSchema.validate(req.body);
+        const { error } = loginSchema.validateAsync(req.body);
         if (error) {
-            return res.status(400).send({ message: error.details[0].message });
+            console.log(`Login validation failed for user ${req.body.email}: ${error.details[0].message}`);
+            return handleValidationError(error, res);
         }
         const {email ,password} = req.body;
         const user = await userModel.findOne({email});
@@ -71,8 +83,10 @@ router.post('/login', async(req, res) => {
             const passwordMatch = await bcrypt.compare(password, user.password);
             if(passwordMatch){
                 const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '1h' });
+                console.log(`User logged in successfully: ${email}`);
                 res.status(200).send({message: 'Logged in successfully!', token});
             }else{
+                console.log(`Invalid password attempt for user ${email}`);
                 res.status(400).send('Invalid email or password');
             }
         }else{
