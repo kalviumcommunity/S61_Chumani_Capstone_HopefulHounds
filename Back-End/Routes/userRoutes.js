@@ -7,6 +7,13 @@ const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const{registerSchema, loginSchema} = require('./validator');
+const admin = require('firebase-admin');
+const serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+const redis = require('redis');
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
 
 require('dotenv').config();
 
@@ -101,6 +108,23 @@ router.post('/login', async(req, res) => {
 const authenticateToken = (req, res, next) => {
     const token = req.header('Authorization');
     if(!token) return res.status(401).send({message:'Access Denied'});
+
+    redisClient.get(token, (err, reply) => {
+        if(reply) return res.status(400).send({message: 'Invalid Token'});
+        try{
+            const verified = jwt.verify(token, secretKey);
+            req.user = verified;
+            next();
+        }catch(error){
+            if(error instanceof TokenExpiredError){
+                return res.status(401).send({message: 'Token has expired'});
+            }else{
+                return res.status(400).send({message: 'Invalid Token'});
+            }
+        }
+    })
+    
+
     try{
         const verified = jwt.verify(token, secretKey);
         req.user = verified;
@@ -112,10 +136,41 @@ const authenticateToken = (req, res, next) => {
             return res.status(400).send({message: 'Invalid Token'});
         }
     }
+
 };
 
 router.get('/protected', authenticateToken, (req, res) => {
     res.send({message:'This is a protected route'});
+})
+
+
+router.post('/firebaseLogin', async(req, res) => {
+    const {token} = req.body;
+    try{
+        const decodedToken = await admin.auth().verifyIdToken(token);
+        const {uid, email} = decodedToken;
+        let user = await userModel.findOne({email});
+        if(!user){
+            user = new userModel({
+                username: email.split('@')[0],
+                email,
+                password: '',
+                profilePicture: ''
+            });
+            await user.save();
+        }
+        const jwtToken = jwt.sign({id: user._id}, secretKey, {expiresIn: '1h'});
+        res.status(200).send({message: 'Logged in successfully!', token: jwtToken});
+    }catch(error){
+        console.error('Error logging in with Firebase', error);
+        res.status(500).send({message:'Error logging in with firebase'});
+    }
+})
+
+router.post('/logout', authenticateToken, async (req, res) => {
+    const token = req.header('Authorization');
+    await redisClient.set(token, true);
+    res.status(200).send({message: 'Logged out successfully'});
 })
 
 module.exports = router;
