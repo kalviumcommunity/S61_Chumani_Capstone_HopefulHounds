@@ -8,7 +8,7 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const{registerSchema, loginSchema} = require('./validator');
 const admin = require('firebase-admin');
-const serviceAccount = require('../hopeful-hounds-firebase-adminsdk-hila6-3d29bc8165.json');
+const serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
 const redis = require('redis');
 
 admin.initializeApp({
