@@ -14,6 +14,7 @@ app.use((req, res, next)=> {
     res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
     next();
 })
+
 connectDB();
 app.get('/', (req, res) => {
     res.send('Get request through express')

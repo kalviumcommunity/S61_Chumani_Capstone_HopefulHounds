@@ -108,6 +108,7 @@ router.post('/login', async(req, res) => {
 const authenticateToken = (req, res, next) => {
     const token = req.header('Authorization');
     if(!token) return res.status(401).send({message:'Access Denied'});
+
     redisClient.get(token, (err, reply) => {
         if(reply) return res.status(400).send({message: 'Invalid Token'});
         try{
@@ -123,11 +124,25 @@ const authenticateToken = (req, res, next) => {
         }
     })
     
+
+    try{
+        const verified = jwt.verify(token, secretKey);
+        req.user = verified;
+        next();
+    }catch(error){
+        if(error instanceof TokenExpiredError){
+            return res.status(401).send({message: 'Token has expired'});
+        }else{
+            return res.status(400).send({message: 'Invalid Token'});
+        }
+    }
+
 };
 
 router.get('/protected', authenticateToken, (req, res) => {
     res.send({message:'This is a protected route'});
 })
+
 
 router.post('/firebaseLogin', async(req, res) => {
     const {token} = req.body;
