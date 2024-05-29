@@ -8,6 +8,12 @@ const hospitalsRoute = require('./Routes/hospitalsRoutes');
 const userRoute = require('./Routes/userRoutes');
 app.use(express.json());
 app.use(cors());
+
+app.use((req, res, next)=> {
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    next();
+})
 connectDB();
 app.get('/', (req, res) => {
     res.send('Get request through express')
