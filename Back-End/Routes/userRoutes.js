@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const userModel = require('../Schema/userSchema');
@@ -8,14 +9,17 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const{registerSchema, loginSchema} = require('./validator');
 const admin = require('firebase-admin');
-const serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+const serviceAccount = require('../hopeful-hounds-firebase-adminsdk-hila6-3d29bc8165.json');
 const redis = require('redis');
+
+console.log("FIREBASE_SERVICE_ACCOUNT_KEY:", process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
-require('dotenv').config();
+
 
 const secretKey = process.env.JWT_SECRET;
 
