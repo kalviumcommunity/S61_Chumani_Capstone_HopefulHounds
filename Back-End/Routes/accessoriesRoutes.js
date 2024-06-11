@@ -2,6 +2,7 @@ const express = require('express');
 const {AccessoriesModel} = require('../Schema/accessoriesSchema')
 const {Router} = require('express');
 const accessoriesRoute = express.Router();
+const authenticateAdmin = require('../Middleware/authenticateAdmin')
 accessoriesRoute.use(express.json());
 
 const validateAccessoryData = (req, res, next) => {
@@ -35,20 +36,6 @@ accessoriesRoute.post('/create', async (req, res, next) => {
             res.status(500).json({error: "Internal server error"});
             next(error);
         }
-    }
-})
-
-accessoriesRoute.put("/update/:id", async (req, res, next) => {
-    try{
-        const {id} = req.params;
-        const accessory = await AccessoriesModel.findByIdAndUpdate(id, req.body);
-        if(!accessory){
-            return res.status(404).json({message: "Accessory not found"});
-        }
-        res.status(200).json(updatedAccessory);
-    }catch(error){
-        res.status(500).json({message : error.message});
-        next(error);
     }
 })
 

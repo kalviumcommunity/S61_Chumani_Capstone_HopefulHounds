@@ -1,13 +1,19 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const connectDB = require('./Config/dbconn');
 const app = express();
 const dogRoute = require('./Routes/DogDetailsRoutes');
 const accessoriesRoute = require('./Routes/accessoriesRoutes');
 const hospitalsRoute = require('./Routes/hospitalsRoutes');
 const userRoute = require('./Routes/userRoutes');
+const adminRoutes = require('./Routes/adminRoutes')
+const adminModel = require('./Schema/adminSchema');
+const bcrypt = require('bcrypt');
+
 app.use(express.json());
 app.use(cors());
+app.use(bodyParser.json());
 
 app.use((req, res, next)=> {
     res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
@@ -16,12 +22,14 @@ app.use((req, res, next)=> {
 })
 
 connectDB();
+
 app.get('/', (req, res) => {
     res.send('Get request through express')
 })
 app.get('/ping', (req, res) => {
     res.send("Endpoint")
 })
+app.use('/api/admin',adminRoutes)
 app.use('/api', dogRoute);
 app.use('/api/accessory', accessoriesRoute);
 app.use('/api/hospital', hospitalsRoute);

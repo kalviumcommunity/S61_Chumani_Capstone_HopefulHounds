@@ -12,6 +12,10 @@ const accessoriesSchema = new mongoose.Schema({
             },
             message: props => `${props.value} is not a valid URL!`
         }
+    },
+    reference:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'admin'
     }
 });
 

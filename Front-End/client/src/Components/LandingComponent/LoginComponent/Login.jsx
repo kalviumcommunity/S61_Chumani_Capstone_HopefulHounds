@@ -23,64 +23,106 @@ import { Navigate } from "react-router-dom";
 function Login() {
   const { userLoggedIn, setUserLogIn } = useAuth();
   const [selectedFile, setSelectedFile] = useState(null);
-const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     name: "",
-    email:"",
-    password:"",
+    email: "",
+    password: "",
     selectedFile: null,
-})
+  });
   const [isSigningIn, setIsSigningIn] = useState(false);
-  const toast = useToast();    
-const handleChange = (e) => {
-    const {name, value} = e.target;
+  const toast = useToast();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData((prevState) => ({
-        ...prevState,
-        [name] : value,
-    }))
-}
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
     if (!isSigningIn) {
       setIsSigningIn(true);
-      await doSignInWithEmailAndPassword(formData.email,formData.password);
+      console.log("Email", formData.email);
+      console.log("Password:", formData.password);
+      await doSignInWithEmailAndPassword(formData.email, formData.password);
     }
-    if (formData.email && formData.password) {
-      try {
-        const response = await fetch("http://localhost:4000/api/user/login", {
+  
+    // Fetch admin details from the database
+    try {
+      const response = await fetch("http://localhost:4000/api/admin/profile");
+      if (!response.ok) {
+        throw new Error('Failed to fetch admin details');
+      }
+      const adminDetails = await response.json();
+      console.log("line. 99", adminDetails);
+  
+      // Check if the input details match admin details
+      const matchedAdmin = adminDetails.find(
+        (admin) =>
+          formData.email === admin.email && formData.password === admin.password
+      );
+  
+      if (matchedAdmin) {
+        console.log("The data matches.");
+        localStorage.setItem("adminId", matchedAdmin._id);
+        localStorage.setItem("adminEmail", matchedAdmin.email);
+        localStorage.setItem("adminPassword", matchedAdmin.password);
+        localStorage.setItem("IsAdmin", matchedAdmin.isAdmin);
+  
+        setUserLogIn(true);
+        toast({
+          title: "Successfully logged in as Admin!",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        // If the input details don't match admin, try user login
+        const userResponse = await fetch("http://localhost:4000/api/user/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ email: formData.email, password: formData.password }),
         });
-
-        if (response.ok) {
-          const data = await response.json();
-          localStorage.setItem("token", data.token);
-            setUserLogIn(true);
+  
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          localStorage.setItem("token", userData.token);
+          setUserLogIn(true);
+  
+          if (userData.isAdmin) {
+            localStorage.setItem('IsAdmin', userData.isAdmin);
+            console.log('He is an admin');
+          } else {
+            localStorage.setItem('IsAdmin', false);
+            console.log('He is not an admin');
+          }
+  
           toast({
-            title: data.message || "Logged in successfully!",
+            title: userData.message || "Logged in successfully!",
             status: "success",
             duration: 3000,
             isClosable: true,
           });
         } else {
-          const errorData = await response.json();
+          const errorData = await userResponse.json();
           throw new Error(errorData.message || "Failed to log in");
         }
-      } catch (error) {
-        console.error("Error:", error);
-        toast({
-          title: error.message || "An error occurred",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-        setIsSigningIn(false);
       }
+    } catch (error) {
+      console.error("Error:", error);
+      toast({
+        title: error.message || "An error occurred",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      setIsSigningIn(false);
     }
   };
+  
 
   const onGoogleSignIn = async (e) => {
     e.preventDefault();
@@ -104,7 +146,7 @@ const handleChange = (e) => {
         if (response.ok) {
           const data = await response.json();
           localStorage.setItem("token", data.token);
-            setUserLogIn(true);
+          setUserLogIn(true);
           toast({
             title: data.message || "Logged in successfully!",
             status: "success",
@@ -142,11 +184,11 @@ const handleChange = (e) => {
 
   const handleFileChange = (event) => {
     setFormData((prevState) => ({
-        ...prevState,
-        selectedFile: event.target.files[0],
-    }))
+      ...prevState,
+      selectedFile: event.target.files[0],
+    }));
   };
-  console.log(userLoggedIn)
+  console.log(userLoggedIn);
   return (
     <div>
       {/* {userLoggedIn && <Navigate to={"/home"} replace={true} />} */}
