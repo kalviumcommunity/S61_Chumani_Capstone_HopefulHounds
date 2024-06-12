@@ -42,8 +42,8 @@ function Accessory() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const toast = useToast();
   const [formData, setFormData] = useState({
-    imageLinks: ""
-  })
+    imageLinks: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +52,12 @@ function Accessory() {
           `http://localhost:4000/api/accessory/read`
         );
         console.log(response.data);
-        setEntities(response.data.data);
+        // setEntities(response.data.data);
+        if (response.data && Array.isArray(response.data.data)) {
+          setEntities(response.data.data);
+        } else {
+          throw new Error("Unexpected response format");
+        }
       } catch (error) {
         console.error("Error fetching entities:", error);
         setError(
@@ -87,62 +92,64 @@ function Accessory() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       const accessoryData = {
-        image_links: formData.imageLinks.split(',')
+        image_links: formData.imageLinks,
+        admin: localStorage.getItem('adminId'),
+      };
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found.  Please log in again");
       }
-      const token = localStorage.getItem('token');
-      if(!token){
-        throw new Error('No token found.  Please log in again');
-      }
-      console.log('Token', token);
-      const response = await axios.post("http://localhost:4000/api/accessory/create", accessoryData, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      console.log("Token", token);
+      const response = await axios.post(
+        "http://localhost:4000/api/accessory/create",
+        accessoryData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
-      console.log('Accessory added:', response.data);
+      );
+      console.log("Accessory added:", response.data);
       toast({
-        title: 'Accessory added successfully',
-        status: 'success',
+        title: "Accessory added successfully",
+        status: "success",
         duration: 3000,
         isClosable: true,
-      })
+      });
       closeModal();
-    }catch(error){
-      console.error('Error adding accessory:', error);
-      if(error.response){
-        console.error('Server responded with status:', error.response.status);
-        console.error('Response data:', error.response.data);
-        if(error.response.status == 401 || error.response.data.message === 'Invalid Token'){
+    } catch (error) {
+      console.error("Error adding accessory:", error);
+      if (error.response) {
+        console.error("Server responded with status:", error.response.status);
+        console.error("Response data:", error.response.data);
+        if (
+          error.response.status == 401 ||
+          error.response.data.message === "Invalid Token"
+        ) {
           toast({
-            title: 'Authentication error',
-            description: 'Your session has expired or is invalid. Please log in again.',
-            status: 'error',
+            title: "Authentication error",
+            description:
+              "Your session has expired or is invalid. Please log in again.",
+            status: "error",
             duration: 5000,
             isClosable: true,
           });
-        }else{
+        } else {
           toast({
-            title: 'Error adding accessory',
+            title: "Error adding accessory",
             description: error.response.data.message,
-            status: 'error',
+            status: "error",
             duration: 5000,
             isClosable: true,
           });
         }
-      }else{
-        console.error('Error message:', error.message);
+      } else {
+        console.error("Error message:", error.message);
       }
-      toast({
-        title: 'Error adding accessory',
-        description: error.response ? error.response.data.message : error.message,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
     }
-  }
+  };
 
   return (
     <div>
@@ -193,19 +200,18 @@ function Accessory() {
                   justifyContent="space-around"
                   gap={6}
                 >
-                  {entities.map((entity) => (
-                    <Box
-                      key={entity._id}
-                      p={5}
-                      shadow="md"
-                      borderWidth="1px"
-                      borderRadius="md"
-                      width="300px"
-                      bgColor="rgba(255,255,255,0.5)"
-                    >
-                      {entity.image_links.map((image, index) => (
+                  {entities && entities.length > 0 ? (
+                    entities.map((entity) => (
+                      <Box
+                        key={entity._id}
+                        p={5}
+                        shadow="md"
+                        borderWidth="1px"
+                        borderRadius="md"
+                        width="300px"
+                        bgColor="rgba(255,255,255,0.5)"
+                      >
                         <Box
-                          key={index}
                           mb={4}
                           display="flex"
                           justifyContent="center"
@@ -214,25 +220,25 @@ function Accessory() {
                           minHeight="250px"
                         >
                           <Image
-                            src={image}
+                            src={entity.image_links} // Updated to handle image_links as a single string
                             alt=""
                             borderRadius="md"
                             height="200px"
                           />
-                          {index === 0 && (
-                            <Button
-                              colorScheme="teal"
-                              mt={2}
-                              width="full"
-                              onClick={() => handleBookNow(entity)}
-                            >
-                              Book Now
-                            </Button>
-                          )}
+                          <Button
+                            colorScheme="teal"
+                            mt={2}
+                            width="full"
+                            onClick={() => handleBookNow(entity)}
+                          >
+                            Book Now
+                          </Button>
                         </Box>
-                      ))}
-                    </Box>
-                  ))}
+                      </Box>
+                    ))
+                  ) : (
+                    <Text>No accessories available</Text>
+                  )}
                 </Box>
                 <Drawer
                   isOpen={isDrawerOpen}

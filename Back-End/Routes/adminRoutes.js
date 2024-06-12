@@ -37,8 +37,8 @@ router.post('/login', async (req, res) => {
 
 router.get('/profile',async  (req, res) => {
     try {
-        const adminData = await adminModel.find().populate('reference')
-        res.send(adminData)
+        const adminData = await adminModel.find().populate('accessories')
+        res.status(200).send(adminData)
     } catch (error) {
         res.send({error})
     }
