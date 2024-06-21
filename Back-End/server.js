@@ -8,8 +8,9 @@ const accessoriesRoute = require('./Routes/accessoriesRoutes');
 const hospitalsRoute = require('./Routes/hospitalsRoutes');
 const userRoute = require('./Routes/userRoutes');
 const adminRoutes = require('./Routes/adminRoutes')
-const adminModel = require('./Schema/adminSchema');
+const paymentRoutes = require('./Routes/paymentRoutes');
 const bcrypt = require('bcrypt');
+
 
 app.use(express.json());
 app.use(cors());
@@ -34,6 +35,8 @@ app.use('/api', dogRoute);
 app.use('/api/accessory', accessoriesRoute);
 app.use('/api/hospital', hospitalsRoute);
 app.use('/api/user',  userRoute);
+app.use('/api/stripe', paymentRoutes);
+
 app.use((err, req,res,next) => {
     console.error(err.stack);
     res.status(err.status || 500).json({
