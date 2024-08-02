@@ -22,4 +22,4 @@ _Welcome to Our Dog Adoption and Care Website! At Hopeful Hounds, we are passion
 
 ## Render Deployed Link - https://s61-chumani-capstone-hopefulhounds-2.onrender.com
 
-## Front-end Deployed Link - https://6648a32f5b0c79d4533265d8--incandescent-pudding-0f42e0.netlify.app/
+## Front-end Deployed Link - https://66ad05166e8dc38240410116--stately-alpaca-77e3bf.netlify.app/
