@@ -203,6 +203,7 @@ function Dog() {
             </div>
           ))}
           {selectedDog && (
+            <ChakraProvider>
             <Modal
               isCentered
               onClose={onDetailModalClose}
@@ -214,11 +215,11 @@ function Dog() {
                 style={{
                   backgroundColor: "rgba(255, 255, 255, 0.8)",
                   width: "500px",
-                  marginLeft: "30%",
+                  // marginLeft: "30%",
                   textAlign: "center",
                   height: "500px",
-                  position: "relative",
-                  top: "120px",
+                  // position: "relative",
+                  // top: "120px",
                   overflowY: "auto",
                 }}
               >
@@ -245,14 +246,24 @@ function Dog() {
                       padding: "10px",
                       color: "black",
                       fontSize: "17px",
+                      lineHeight: "30px"
                     }}
                   >
+                    <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginBottom: "10px",
+                    }}
+                    >
                     <img
                       src={selectedDog.picture_link}
                       alt={`${selectedDog.name}`}
                       style={{ width: "200px", height: "auto" }}
                     />
-                    <h2>{selectedDog.name}</h2>
+                    </div>
+                    <h2 style={{textAlign:"center"}}>{selectedDog.name}</h2>
                     {isUpdating ? (
                       <>
                         <input
@@ -275,28 +286,31 @@ function Dog() {
                         />
                       </>
                     ) : (
-                      <p>
+                      <p style={{textAlign: "left"}}>
                         <strong>Description:</strong> {selectedDog.description}
                       </p>
                     )}
-                    <input
+                    {/* <input
                       type="text"
                       name="adoption_status"
                       value={updatedDog.adoption_status}
                       onChange={handleInputChange}
-                    />
-                    <input
+                    /> */}
+                    <p style={{textAlign: "left"}}><strong>Adoption Status:</strong>{updatedDog.adoption_status}</p>
+                    {/* <input
                       type="text"
                       name="vaccinated"
                       value={updatedDog.vaccinated}
                       onChange={handleInputChange}
-                    />
-                    <input
+                    /> */}
+                    {/* <p><strong>Address:</strong>{updatedDog.vaccinated}</p> */}
+                    {/* <input
                       type="text"
                       name="address"
                       value={updatedDog.address}
                       onChange={handleInputChange}
-                    />
+                    /> */}
+                    <p style={{textAlign: "left"}}><strong>Address:</strong>{updatedDog.address}</p>
                   </div>
                 </ModalBody>
                 <ModalFooter
@@ -358,6 +372,7 @@ function Dog() {
                 </ModalFooter>
               </ModalContent>
             </Modal>
+            </ChakraProvider>
           )}
         </div>
         {showAlert && (
